@@ -1,0 +1,16 @@
+"""
+You are given a string S, and you have to find all the amazing substrings of S.
+
+Amazing Substring is one that starts with a vowel (a, e, i, o, u, A, E, I, O, U).
+"""
+class Solution:
+    # @param A : string
+    # @return an integer
+    def solve(self, A):
+        count = 0 
+        vowels = (["A","E","I","O","U","a","e","i","o","u"])
+        length = len(A) 
+        for i in range(length-1,-1,-1):
+            if A[i] in vowels:
+                count += (length - i)
+        return count % 10003
