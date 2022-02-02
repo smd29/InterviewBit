@@ -1,0 +1,20 @@
+"""
+Given an array of integers A, find and return the product array of same size where i'th eement of the product array will be equal to the product of all the elements divided by the i'th element of the array.
+
+Note: It is always possible to form the product array with integer (32 bit) values.
+"""
+class Solution:
+    # @param A : list of integers
+    # @return a list of integers
+    def solve(self, A):
+        prod = 1
+        result = []
+        for i in range(len(A)):
+            result.append(prod)
+            prod = prod*A[i]
+        
+        prod = 1
+        for i in range(len(A)-1,-1,-1):
+            result[i] = result[i]*prod
+            prod = prod*A[i]
+        return result
