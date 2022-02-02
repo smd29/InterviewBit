@@ -1,0 +1,19 @@
+"""
+You are given a constant array A.
+
+You are required to return another array which is the reversed form of input array.
+"""
+class Solution:
+    # @param A : tuple of integers
+    # @return a list of integers
+    def solve(self, A):
+        A = list(A)
+        left, right = 0, len(A) - 1
+        while left < right:
+            #swap A[left] A[right]
+            tmp = A[left]
+            A[left] = A[right]
+            A[right] = tmp
+            left += 1
+            right -= 1
+        return A
