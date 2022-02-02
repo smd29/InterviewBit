@@ -1,0 +1,18 @@
+"""
+You are given an array of integers A of size N.
+Return the difference between the maximum among all even numbers of A and the minimum among all odd numbers in A.
+"""
+import sys
+class Solution:
+    # @param A : list of integers
+    # @return an integer
+    def solve(self, A):
+        max_even = -sys.maxsize
+        min_odd = sys.maxsize
+        for i in A:
+            #if odd 
+            if i % 2 == 1:
+                min_odd = min(min_odd,i)
+            else:
+                max_even = max(max_even,i)
+        return max_even - min_odd
