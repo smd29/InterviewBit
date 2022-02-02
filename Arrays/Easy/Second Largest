@@ -1,0 +1,24 @@
+"""
+You are given an integer T (Number of test cases). 
+For each test case, You are given an integer array A. You have to find the second largest element/value in the array or report that no such element exists.
+"""
+def main():
+    # YOUR CODE GOES HERE
+    # Please take input and print output to standard input/output (stdin/stdout)
+    # E.g. 'input()/raw_input()' for input & 'print' for output
+    no_lines = int(input())
+    for i in range(no_lines):
+        tmp = input().split()
+        A = []
+        for i in range(1,int(tmp[0])+1):
+            A.append(int(tmp[i]))
+        A.sort(reverse=True)
+        #print(A)
+        if len(A) < 2:
+            print(-1)
+        else:
+            print(A[1])
+    return 0
+
+if __name__ == '__main__':
+    main()
