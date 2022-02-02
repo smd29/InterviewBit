@@ -1,0 +1,22 @@
+"""
+Write a program to print maximum and minimum elements of the input array A of size N where you have to take integer N and further N elements as input from user.
+"""
+import sys
+def main():
+    # YOUR CODE GOES HERE
+    # Please take input and print output to standard input/output (stdin/stdout)
+    # E.g. 'input()/raw_input()' for input & 'print' for output
+    tmp = input().split()
+    length = tmp[0]
+    i = 1 
+    max_elem = -sys.maxsize
+    min_elem = sys.maxsize
+    while i <= int(length):
+        max_elem = max(max_elem,int(tmp[i]))
+        min_elem = min(min_elem,int(tmp[i]))
+        i += 1
+    print(max_elem,min_elem)
+    return 0
+
+if __name__ == '__main__':
+    main()
