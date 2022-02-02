@@ -1,0 +1,29 @@
+"""
+You are given an integer array A and an integer B. You have to print the same array after rotating it B times towards right.
+"""
+def main():
+    # YOUR CODE GOES HERE
+    # Please take input and print output to standard input/output (stdin/stdout)
+    # E.g. 'input()/raw_input()' for input & 'print' for output
+    tmp = input().split()
+    #A = [0]*int(tmp[0])
+    A = []
+    for i in range(1,int(tmp[0])+1):
+        A.append(int(tmp[i]))
+    B = int(input())
+    B = B % len(A)
+    #reverse the list
+    A = A[::-1]
+    #print(A)
+    left = B
+    tmp1 = A[:left]
+    tmp1 = tmp1[::-1]
+    tmp2 = A[left:]
+    tmp2 = tmp2[::-1]
+    tmp2 = tmp1+tmp2
+    for i in tmp2:
+        print(i,end= " ")
+
+
+if __name__ == '__main__':
+    main()
