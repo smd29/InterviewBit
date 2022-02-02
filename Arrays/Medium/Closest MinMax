@@ -1,0 +1,25 @@
+"""
+Given an array A. Find the size of the smallest subarray such that it contains atleast one occurrence of the maximum value of the array
+
+and atleast one occurrence of the minimum value of the array.
+"""
+class Solution:
+    # @param A : list of integers
+    # @return an integer
+    def solve(self, A):
+        min_val = min(A)
+        max_val = max(A)
+        if min_val == max_val:
+            return 1
+        max_idx = min_idx = -1
+        ans = len(A)
+        for i in range(len(A)-1,-1,-1):
+            if A[i] == min_val:
+                min_idx = i 
+                if max_idx != -1:
+                    ans = min(ans,abs(max_idx-min_idx)+1)
+            elif A[i] == max_val:
+                max_idx = i 
+                if min_idx != -1:
+                    ans = min(ans,abs(max_idx-min_idx)+1)
+        return ans
