@@ -1,0 +1,27 @@
+"""
+Given an array of integers A and multiple values in B which represents number of times array A needs to be left rotated.
+
+Find the rotated array for each value and return the result in the from of a matrix where i'th row represents the rotated array for the i'th value in B.
+"""
+import copy
+class Solution:
+    # @param A : list of integers
+    # @param B : list of integers
+    # @return a list of list of integers
+    def solve(self, a, B):
+        def reverse(arr,start,end):
+            while start < end:
+                arr[start],arr[end] = arr[end],arr[start]
+                start += 1
+                end -= 1
+            return arr
+        res =[]
+        for i in B:
+            #print("----")
+            A = copy.deepcopy(a)
+            rotation = i % len(A)
+            A = reverse(A,0,len(A)-1)
+            left = reverse(A,0,len(A)-rotation-1)
+            right = reverse(A,len(A)-rotation,len(A)-1)
+            res.append(right)
+        return res
