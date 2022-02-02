@@ -1,0 +1,18 @@
+"""
+Given an integer array A containing N distinct integers, you have to find all the leaders in the array A.
+
+An element is leader if it is strictly greater than all the elements to its right side.
+
+NOTE:The rightmost element is always a leader.
+"""
+class Solution:
+    # @param A : list of integers
+    # @return a list of integers
+    def solve(self, A):
+        res = [A[-1]]
+        max_tillNow = A[-1]
+        for i in range(len(A)-2,-1,-1):
+            if A[i] > max_tillNow:
+                res.append(A[i])
+                max_tillNow = A[i]
+        return res
