@@ -1,0 +1,34 @@
+"""
+Little Ponny is given an array, A, of N integers. In a particular operation, he can set any element of the array equal to -1.
+
+He wants your help for finding out the minimum number of operations required such that the maximum element of the resulting array is B. If it is not possible then return -1.
+
+Input 1:
+
+ A = [2, 4, 3, 1, 5]
+ B = 3 
+ 
+Output 1:
+
+ 2 
+ 
+Explanation 1:
+
+ We need to remove 4 and 5 to make 3 the biggest element.  
+"""
+class Solution:
+    # @param A : list of integers
+    # @param B : integer
+    # @return an integer
+    def solve(self, A, B):
+        #count how many numbers are greater than B
+        if B not in A:
+            return -1
+        count = 0 
+        for i in A:
+            if i > B:
+                count += 1
+        #print(count)
+        #if count > 0:
+        return count
+        #return -1
