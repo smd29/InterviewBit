@@ -1,0 +1,21 @@
+"""
+Given two binary strings, return their sum (also a binary string).
+"""
+
+class Solution:
+	# @param A : string
+	# @param B : string
+	# @return a strings
+	def addBinary(self, A, B):
+        A = A.zfill(max(len(A),len(B)))
+        B = B.zfill(max(len(A),len(B)))
+        ptr = len(A) - 1
+        carry = 0 
+        num = ""
+        for idx in range(ptr,-1,-1):
+            carry, val = divmod(int(A[idx])+int(B[idx])+carry,2)
+            num += str(val)
+        if carry == 1:
+            num += "1"
+        num = num[::-1]
+        return num.lstrip("0")
