@@ -1,0 +1,18 @@
+'''
+Given an array of integers, every element appears thrice except for one which occurs once.
+
+Find that element which does not appear thrice.
+'''
+class Solution:
+	# @param A : tuple of integers
+	# @return an integer
+	def singleNumber(self, A):
+        ans = 0
+        for bit in range(32):
+            cnt_set = 0 
+            for val in A:
+                if val & (1 << bit):
+                    cnt_set += 1
+            if cnt_set % 3 != 0:
+                ans = ans | (1 << bit)
+        return ans
