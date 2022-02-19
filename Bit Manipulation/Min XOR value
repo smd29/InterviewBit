@@ -1,0 +1,13 @@
+"""
+Given an integer array A of N integers, find the pair of integers in the array which have minimum XOR value. Report the minimum XOR value.
+"""
+class Solution:
+	# @param A : list of integers
+	# @return an integer
+	def findMinXor(self, A):
+        A.sort()
+        minxor = float('inf')
+        for idx in range(len(A)-1):
+            val = A[idx] ^ A[idx+1]
+            minxor = min(minxor,val)
+        return minxor
