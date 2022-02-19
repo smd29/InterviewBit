@@ -1,0 +1,12 @@
+'''
+Given an array of integers A, every element appears twice except for one. Find that single one.
+'''
+
+class Solution:
+    # @param A : tuple of integers
+    # @return an integer
+    def singleNumber(self, A):
+        ans = A[0]
+        for idx in range(1,len(A)):
+            ans ^= A[idx]
+        return ans
