@@ -1,0 +1,88 @@
+"""
+Problem Description
+Given an integer A, generate a square matrix filled with elements from 1 to A2 in spiral order.
+
+
+
+Problem Constraints
+1 <= A <= 1000
+
+
+
+Input Format
+First and only argument is integer A
+
+
+Output Format
+Return a 2-D matrix which consists of the elements in spiral order.
+
+
+
+Example Input
+Input 1:
+
+1
+Input 2:
+
+2
+
+
+Example Output
+Output 1:
+
+[ [1] ]
+Output 2:
+
+[ [1, 2], [4, 3] ]
+
+
+Example Explanation
+Explanation 1:
+
+ 
+Only 1 is to be arranged.
+Explanation 2:
+
+1 --> 2
+      |
+      |
+4<--- 3
+"""
+
+class Solution:
+	# @param A : integer
+	# @return a list of list of integers
+	def generateMatrix(self, A):
+        mat = [[0 for _ in range(A)]for _ in range(A)]
+        end = A * A
+    #right -> down -> left -> up
+        direction = 'right'
+        row, col = 0, 0
+        for val in range(1,end+1):
+            if mat[row][col] == 0:
+                mat[row][col] = val
+            if direction == 'right':
+                if col < A-1 and mat[row][col+1] == 0:
+                    col += 1
+                else:
+                    direction = 'down'
+                    row += 1
+            elif direction == 'down':
+                if row < A-1 and mat[row+1][col] == 0:
+                    row += 1
+                else:
+                    direction = 'left'
+                    col -= 1
+            elif direction == 'left':
+                if col > -1 and mat[row][col-1] == 0:
+                    col -= 1
+                else:
+                    direction = 'up'
+                    row -= 1
+            elif direction == 'up':
+                if row > -1 and mat[row-1][col] == 0:
+                    row -= 1
+                else:
+                    direction = 'right'
+                    col += 1
+        return mat
