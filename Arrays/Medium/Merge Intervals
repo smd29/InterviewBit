@@ -1,0 +1,95 @@
+"""
+Problem Description
+
+Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
+
+You may assume that the intervals were initially sorted according to their start times.
+
+
+
+Problem Constraints
+
+0 <= |intervals| <= 105
+
+
+
+Input Format
+
+First argument is the vector of intervals
+
+second argument is the new interval to be merged
+
+
+
+Output Format
+
+Return the vector of intervals after merging
+
+
+
+Example Input
+
+Input 1:
+
+Given intervals [1, 3], [6, 9] insert and merge [2, 5] .
+Input 2:
+
+Given intervals [1, 3], [6, 9] insert and merge [2, 6] .
+
+
+Example Output
+
+Output 1:
+
+ [ [1, 5], [6, 9] ]
+Output 2:
+
+ [ [1, 9] ]
+
+
+Example Explanation
+
+Explanation 1:
+
+(2,5) does not completely merge the given intervals
+Explanation 2:
+
+(2,6) completely merges the given intervals
+"""
+# Definition for an interval.
+# class Interval:
+#     def __init__(self, s=0, e=0):
+#         self.start = s
+#         self.end = e
+
+class Solution:
+    # @param intervals, a list of Intervals
+    # @param newInterval, a Interval
+    # @return a list of Interval
+    def insert(self, intervals, newInterval):
+        if len(intervals) == 0:
+            return [newInterval]
+    	if newInterval.end < intervals[0].start:
+    		# Before intervals, no overlap
+    		return [newInterval] + intervals
+    	if newInterval.start > intervals[-1].end:
+    		# After intervals, no overlap
+    		return intervals + [newInterval]
+        #intervals.append(newInterval)
+		#intervals = sorted(intervals, key = lambda x:x[0])
+		intervals2 = []
+		flag = False
+		for val in intervals:
+			if flag == False and newInterval.start <= val.start:
+				intervals2.append(newInterval)
+				flag = True 
+			intervals2.append(val)
+		if not flag:
+            intervals2.append(newInterval)
+		res = [intervals2[0]]
+		for idx in range(1,len(intervals2)):
+			if intervals2[idx].start <= res[-1].end:
+				res[-1].end = max(res[-1].end,intervals2[idx].end)
+            else:
+                res.append(intervals2[idx])
+        return res
