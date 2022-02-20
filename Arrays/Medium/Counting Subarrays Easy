@@ -1,0 +1,49 @@
+"""
+Given an array A of N non-negative numbers and you are also given non-negative number B.
+
+You need to find the number of subarrays in A having sum less than B. We may assume that there is no overflow.
+
+Example Input
+Input 1:
+
+ A = [2, 5, 6]
+ B = 10
+Input 2:
+
+ A = [1, 11, 2, 3, 15]
+ B = 10
+
+
+Example Output
+Output 1:
+
+ 4
+Output 2:
+
+ 4
+
+
+Example Explanation
+Explanation 1:
+
+ The subarrays with sum less than B are {2}, {5}, {6} and {2, 5},
+Explanation 2:
+
+ The subarrays with sum less than B are {1}, {2}, {3} and {2, 3}
+ """
+ class Solution:
+    # @param A : list of integers
+    # @param B : integer
+    # @return an integer
+    def solve(self, A, B):
+        #res = []
+        count = 0 
+        for i in range(len(A)):
+            sum_val = 0 
+            for j in range(i,len(A)):
+                sum_val += A[j]
+                if sum_val < B:
+                    count += 1
+                else:
+                    break
+        return count
