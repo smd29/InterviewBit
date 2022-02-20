@@ -1,0 +1,117 @@
+"""
+Problem Description
+
+Given a 2D integer matrix A of size N x N find a B x B submatrix where B<= N and B>= 1, such that sum of all the elements in submatrix is maximum.
+
+
+
+Problem Constraints
+
+1 <= N <= 103.
+
+1 <= B <= N
+
+-102 <= A[i][j] <= 102.
+
+
+
+Input Format
+
+First arguement is an 2D integer matrix A.
+
+Second argument is an integer B.
+
+
+
+Output Format
+
+Return a single integer denoting the maximum sum of submatrix of size B x B.
+
+
+
+Example Input
+
+Input 1:
+
+ A = [
+        [1, 1, 1, 1, 1]
+        [2, 2, 2, 2, 2]
+        [3, 8, 6, 7, 3]
+        [4, 4, 4, 4, 4]
+        [5, 5, 5, 5, 5]
+     ]
+ B = 3
+Input 2:
+
+ A = [
+        [2, 2]
+        [2, 2]
+    ]
+ B = 2
+
+
+Example Output
+
+Output 1:
+
+ 48
+Output 2:
+
+ 8
+
+
+Example Explanation
+
+Explanation 1:
+
+    Maximum sum 3 x 3 matrix is
+    8 6 7
+    4 4 4
+    5 5 5
+    Sum = 48
+Explanation 2:
+
+ Maximum sum 2 x 2 matrix is
+  2 2
+  2 2
+  Sum = 8
+"""
+
+class Solution:
+    # @param A : list of list of integers
+    # @param B : integer
+    # @return an integer
+    def solve(self, A, B):
+        #pf_sum matrix 
+        N = len(A)
+        pf_sum = [[0 for _ in range(N)]for _ in range(N)]
+        pf_sum[0][0] = A[0][0]
+        for c in range(1,N):
+            pf_sum[0][c] = pf_sum[0][c-1] + A[0][c]
+        for r in range(1,N):
+            pf_sum[r][0] = pf_sum[r-1][0] + A[r][0]
+        for r in range(1,N):
+            for c in range(1,N):
+                pf_sum[r][c] = pf_sum[r-1][c] + pf_sum[r][c-1] - pf_sum[r-1][c-1] + A[r][c]
+        
+        r1, c1 = 0, 0 
+        r2, c2 = B-1, B-1
+        maxSum = float('-inf')
+        for r in range(N - B + 1):
+            for c in range(N - B + 1):
+                r2 = r+B-1
+                c2 = c+B-1
+                maxSum = max(maxSum,self.findSubSum(pf_sum,r,c,r2,c2))
+        return maxSum
+        
+    def findSubSum(self,matrix,r1,c1,r2,c2):
+        if r1 == 0 and c1 == 0:
+            val = matrix[r2][c2]
+        else:
+            if r1 == 0:
+                val = matrix[r2][c2] - matrix[r2][c1-1]
+            elif c1 == 0:
+                val = matrix[r2][c2] - matrix[r1-1][c2]
+            else:
+                val = matrix[r2][c2] - (matrix[r1-1][c2] + matrix[r2][c1-1]) + matrix[r1-1][c1-1]
+        return val
