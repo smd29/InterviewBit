@@ -1,0 +1,58 @@
+"""
+Given an array of integers A of size N denoting the fruits quality. A[i] denotes the fruit quality of the ith fruit.
+
+Shivam needs to pick 4 fruits but he needs to pick them in such a way that his satisfaction value will be maximum.
+
+If a, b, c and d are fruit quality of the 4 fruits picked then the satisfaction value(a, b, c, d) = (a & b & c & d) where & is bitwise AND operator.
+
+Find the maximum satisfaction value Shivam can obtain.
+
+Example Input
+
+Input 1:
+
+ A = [10, 20, 15, 4, 14]
+Input 2:
+
+ A = [2, 2, 7, 15]
+
+
+Example Output
+
+Output 1:
+
+ 4
+Output 2:
+
+ 2
+
+
+Example Explanation
+
+Explanation 1:
+
+ Shivam can pick fruits with fruits quality 20, 15, 4, 14 and satisfaction value is (20 & 15 & 4 & 15) = 4 
+Explanation 2:
+
+ Shivam will pick fruits with fruits quality 2, 2, 7, 15 and satisfaction value is(2 & 2 & 7 & 15) = 2
+ 
+ """
+ 
+ class Solution:
+    # @param A : list of integers
+    # @return an integer
+    def solve(self, A):
+        def check(x, A):
+            ct = 0
+            for a in A:
+                if (a & x) == x:
+                    ct += 1
+            if ct > 3:
+                return 1
+            return 0
+        ans = 0
+        for i in range(32, -1, -1):
+            temp = ans | (1 << i)
+            if check(temp, A) == 1:
+                ans = temp
+        return ans
