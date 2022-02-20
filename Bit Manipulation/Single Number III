@@ -1,0 +1,55 @@
+"""
+Given an array of numbers A , in which exactly two elements appear only once and all the other elements appear exactly twice. Find the two elements that appear only once.
+
+Note: Output array must be sorted.
+
+Example Input
+
+Input 1:
+
+A = [1, 2, 3, 1, 2, 4]
+Input 2:
+
+A = [1, 2]
+
+
+Example Output
+
+Output 1:
+
+[3, 4]
+Output 2:
+
+[1, 2]
+
+
+Example Explanation
+
+Explanation 1:
+
+ 3 and 4 appear only once.
+Explanation 2:
+
+ 1 and 2 appear only once.
+ """
+ 
+ class Solution:
+    # @param A : list of integers
+    # @return a list of integers
+    def solve(self,A):
+        xor = 0
+        for i in A:  # xor all the number in the input array
+            xor ^= i
+
+        rightmost1Bit = 1
+        while xor & rightmost1Bit == 0:  # Find the rightmost different bit which returns 1 with & operation
+            rightmost1Bit <<= 1
+        res = [0, 0]
+        for i in A:  # Divide number in the input array into two groups and do xor at the same time.
+            if i & rightmost1Bit:  # Use & operator to find the number with the same rightmost 1 bit.
+                res[0] ^= i
+            else:
+                res[1] ^= i
+        if res[0] > res[1]:
+            return [res[1],res[0]]
+        return res
