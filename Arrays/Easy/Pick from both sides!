@@ -1,23 +1,91 @@
 """
+Problem Description
+
 Given an integer array A of size N.
 
 You can pick B elements from either left or right end of the array A to get maximum sum.
 
 Find and return this maximum possible sum.
-"""
+
+NOTE: Suppose B = 4 and array A contains 10 elements then
+
+You can pick first four elements or can pick last four elements or can pick 1 from front and 3 from back etc . you need to return the maximum possible sum of elements you can pick.
+
+
+Problem Constraints
+
+1 <= N <= 105
+
+1 <= B <= N
+
+-103 <= A[i] <= 103
+
+
+
+Input Format
+
+First argument is an integer array A.
+
+Second argument is an integer B.
+
+
+
+Output Format
+
+Return an integer denoting the maximum possible sum of elements you picked.
+
+
+
+Example Input
+
+Input 1:
+
+ A = [5, -2, 3 , 1, 2]
+ B = 3
+Input 2:
+
+ A = [1, 2]
+ B = 1
+
+
+Example Output
+
+Output 1:
+
+ 8
+Output 2:
+
+ 2
+
+
+Example Explanation
+
+Explanation 1:
+
+ Pick element 5 from front and element (1, 2) from back so we get 5 + 1 + 2 = 8
+Explanation 2:
+
+ Pick element 2 from end as this is the maximum we can get
+ """
+
 class Solution:
     # @param A : list of integers
     # @param B : integer
     # @return an integer
     def solve(self, A, B):
-        suffix = [0] * (len(A)+1)
-        suffix[len(A)-1] = A[len(A)-1]
-        for i in range(len(A)-2,-1,-1):
-            suffix[i] = suffix[i+1] + A[i]
-        ans = suffix[len(A)-B]
+        right_left = [0] * (len(A)+1)
+        right_left[len(A)-1] = A[len(A)-1]
+        for idx in range(len(A)-2,-1,-1):
+            right_left[idx] = right_left[idx+1] + A[idx]
+        #calculate sum of last B elements
+        ans = right_left[len(A)-B]
+        #keep on calculating sum from start 
         prefixSum = 0 
-        for i in range(B):
-            prefixSum += A[i]
-            suffixSum = suffix[len(A)-B+i+1] 
-            ans = max(prefixSum+suffixSum,ans)
+        for idx in range(B):
+            #sum of first n elements
+            prefixSum += A[idx]
+            #sum of last B - n elements
+            lastSum = right_left[len(A)-B+idx+1]
+            total = prefixSum + lastSum
+            ans = max(ans,total)
         return ans
