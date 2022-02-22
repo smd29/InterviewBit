@@ -4,18 +4,10 @@ Reverse the bits of an 32 bit unsigned integer A.
 class Solution:
     # @param A : unsigned integer
     # @return an unsigned integer
-    def reverse(self, A):
-        #first step:
-        #convert int to binary in reverse
-        rev = ""
-        while A > 0 :
-            rev += str(A % 2)
-            A = A // 2
-        rev = rev.ljust(32,'0')
-        #rev is the reversed binary of A, now we need to change it to decimal 
-        res = 0
-        mul = 1 
-        for i in range(31,-1,-1):
-            res += (int(rev[i]) * mul)
-            mul *= 2
-        return res
+    def reverse(self, n):
+        ret, power = 0, 31
+        while n:
+            ret += (n & 1) << power
+            n = n >> 1
+            power -= 1
+        return ret
