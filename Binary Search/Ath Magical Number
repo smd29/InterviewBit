@@ -1,0 +1,52 @@
+"""
+Problem Description
+You are given three positive integers, A, B, and C.
+
+Any positive integer is magical if divisible by either B or C.
+
+Return the Ath smallest magical number. Since the answer may be very large, return modulo 109 + 7.
+
+
+
+Problem Constraints
+1 <= A <= 109
+
+2 <= B, C <= 40000
+
+
+
+Input Format
+The first argument given is an integer A.
+
+The second argument given is an integer B.
+
+The third argument given is an integer C.
+
+
+
+Output Format
+Return the Ath smallest magical number. Since the answer may be very large, return modulo 109 + 7.
+"""
+
+class Solution:
+    # @param A : integer
+    # @param B : integer
+    # @param C : integer
+    # @return an integer
+    def solve(self, A, B, C):
+        low = 2
+        high = min(B,C) * A 
+        mod = (10 ** 9) + 7
+        def gcd(a,b):
+            if b == 0:
+                return a
+            return gcd(b,a%b)
+        lcm = (B * C) // gcd(B,C)
+        while low <= high:
+            mid = (low + high) // 2
+            smaller = (mid // B) + (mid // C) - (mid // lcm)
+            if smaller < A:
+                low = mid + 1
+            else:
+                high = mid - 1
+        return low % mod
