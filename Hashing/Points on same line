@@ -1,0 +1,100 @@
+"""
+Problem Description
+Given two arrays of integers A and B describing a pair of (A[i], B[i]) coordinates in a 2D plane. A[i] describe x coordinates of the ith point in the 2D plane, whereas B[i] describes the y-coordinate of the ith point in the 2D plane.
+
+Find and return the maximum number of points that lie on the same line.
+
+
+
+Problem Constraints
+1 <= (length of the array A = length of array B) <= 1000
+
+-105 <= A[i], B[i] <= 105
+
+
+
+Input Format
+The first argument is an integer array A.
+The second argument is an integer array B.
+
+
+
+Output Format
+Return the maximum number of points which lie on the same line.
+
+
+
+Example Input
+Input 1:
+
+ A = [-1, 0, 1, 2, 3, 3]
+ B = [1, 0, 1, 2, 3, 4]
+Input 2:
+
+ A = [3, 1, 4, 5, 7, -9, -8, 6]
+ B = [4, -8, -3, -2, -1, 5, 7, -4]
+
+
+Example Output
+Output 1:
+
+ 4
+Output 2:
+
+ 2
+
+
+Example Explanation
+Explanation 1:
+
+ The maximum number of point which lie on same line are 4, those points are {0, 0}, {1, 1}, {2, 2}, {3, 3}.
+Explanation 2:
+
+ Any 2 points lie on a same line.
+"""
+from math import sqrt
+class Solution:
+    # @param A : list of integers
+    # @param B : list of integers
+    # @return an integer
+    def solve(self, A, B):
+        n = len(A)
+        if n < 3:
+            return n 
+        #freq = {}
+        ans = 2
+        for i in range(n):
+            x1, y1 = A[i],B[i]
+            overlap = 0
+            freq = {}
+            for j in range(n):
+                x2,y2 = A[j],B[j]
+                if x1 == x2 and y1 == y2:
+                    overlap += 1
+                    continue
+                m = str(self.calM(x1,y1,x2,y2))
+                tup = tuple(m)
+                if tup in freq:
+                    freq[tup] += 1
+                else:
+                    freq[tup] = 1
+
+            max_freq = 0
+            for item in freq:
+                max_freq = max(max_freq,freq[item])
+            ans = max(ans,max_freq+overlap)
+        
+        return ans
+
+    def gcd(self,a,b):
+        if b == 0:
+            return a 
+        return self.gcd(b,a%b)
+
+    def calM(self,x1,y1,x2,y2):
+        num = (y2-y1)
+        denom = (x2-x1)
+        if num == 0 and denom == 0:
+            return [0,0]
+        _gcd = self.gcd(num,denom)
+        return [num//_gcd,denom//_gcd]
