@@ -1,0 +1,48 @@
+"""
+Problem Description
+
+Given a linked list, return the node where the cycle begins. If there is no cycle, return null.
+
+Try solving it using constant additional space.
+
+Example:
+
+Input: 
+
+                  ______
+                 |     |
+                 \/    |
+        1 -> 2 -> 3 -> 4
+
+Return the node corresponding to node 3. 
+"""
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    # @param A : head node of linked list
+    # @return the head node in the linked list
+    def detectCycle(self, head):
+        if not head:
+            return None 
+        intersect = self.get_intersect(head)
+        if not intersect:
+            return None 
+        ptr1, ptr2 = head, intersect
+        while ptr1 != ptr2:
+            ptr1 = ptr1.next 
+            ptr2 = ptr2.next
+        return ptr1
+
+
+    def get_intersect(self,head):
+        slow, fast = head, head 
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                return slow
+        return None 
