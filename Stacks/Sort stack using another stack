@@ -1,0 +1,92 @@
+"""
+Problem Description
+Given a stack of integers A, sort it using another stack.
+
+Return the array of integers after sorting the stack using another stack.
+
+
+
+Problem Constraints
+1 <= |A| <= 5000
+
+0 <= A[i] <= 109
+
+
+
+Input Format
+The only argument is a stack given as an integer array A.
+
+
+
+Output Format
+Return the array of integers after sorting the stack using another stack.
+
+
+
+Example Input
+Input 1:
+
+ A = [5, 4, 3, 2, 1]
+Input 2:
+
+ A = [5, 17, 100, 11]
+
+
+Example Output
+Output 1:
+
+ [1, 2, 3, 4, 5]
+Output 2:
+
+ [5, 11, 17, 100]
+
+
+Example Explanation
+Explanation 1:
+
+ Just sort the given numbers.
+Explanation 2:
+
+ Just sort the given numbers.
+"""
+class Solution:
+    # @param A : list of integers
+    # @return a list of integers
+    def solve(self, A):
+        if len(A) == 1:
+            return A
+        return self.mergeSort(A)
+
+    def mergeSort(self,A):
+        if len(A) > 1:
+            mid = len(A) // 2
+            left = A[:mid]
+            right = A[mid:]
+            s1 = self.mergeSort(left)
+            s2 = self.mergeSort(right)
+            res = self.mergeSortedStacks(s1,s2)
+            return res
+        else:
+            return A
+
+
+    def mergeSortedStacks(self,st1,st2):
+        temp = []
+        while st1 and st2:
+            if st1[-1] > st2[-1]:
+                temp.append(st1[-1])
+                st1.pop()
+            else:
+                temp.append(st2[-1])
+                st2.pop()
+        while st1:
+            val = st1.pop()
+            temp.append(val)
+        while st2:
+            val = st2.pop()
+            temp.append(val)
+        ans = []
+        while temp:
+            val = temp.pop()
+            ans.append(val)
+        return ans
