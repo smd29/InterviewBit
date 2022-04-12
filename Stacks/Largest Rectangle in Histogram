@@ -1,0 +1,91 @@
+"""
+Problem Description
+Given an array of integers A.
+
+A represents a histogram i.e A[i] denotes the height of the ith histogram's bar. Width of each bar is 1.
+
+Find the area of the largest rectangle formed by the histogram.
+
+
+
+Problem Constraints
+1 <= |A| <= 100000
+
+1 <= A[i] <= 1000000000
+
+
+
+Input Format
+The only argument given is the integer array A.
+
+
+
+Output Format
+Return the area of the largest rectangle in the histogram.
+
+
+
+Example Input
+Input 1:
+
+ A = [2, 1, 5, 6, 2, 3]
+Input 2:
+
+ A = [2]
+
+
+Example Output
+Output 1:
+
+ 10
+Output 2:
+
+ 2
+
+
+Example Explanation
+Explanation 1:
+
+The largest rectangle has area = 10 unit. Formed by A[3] to A[4].
+Explanation 2:
+
+Largest rectangle has area 2.
+"""
+class Solution:
+	# @param A : list of integers
+	# @return an integer
+	def largestRectangleArea(self, A):
+        #for each histogram find the NSE on both sides 
+        left, right = self.NSE_L_idx(A), self.NSE_R_idx(A)
+        max_area = 0 
+        for idx,val in enumerate(A):
+            width = right[idx] - left[idx] + 1
+            area = width * val
+            max_area = max(max_area,area)
+        return max_area
+
+    def NSE_L_idx(self, A):
+        ans = [None] * len(A)
+        stack = []
+        for idx in range(len(A)):
+            while stack and A[stack[-1]] >= A[idx]:
+                stack.pop()
+            if not stack:
+                ans[idx] = 0
+            else:
+                ans[idx] = stack[-1] + 1
+            stack.append(idx)
+        return ans
+
+    def NSE_R_idx(self, A):
+        ans = [None] * len(A)
+        stack = []
+        for idx in range(len(A) - 1, -1, -1):
+            while stack and A[stack[-1]] >= A[idx]:
+                stack.pop()
+            if not stack:
+                ans[idx] = len(A) - 1
+            else:
+                ans[idx] = stack[-1] - 1
+            stack.append(idx)
+        return ans
