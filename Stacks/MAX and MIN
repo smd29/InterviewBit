@@ -1,0 +1,149 @@
+"""
+Problem Description
+Given an array of integers A.
+
+value of a array = max(array) - min(array).
+
+Calculate and return the sum of values of all possible subarrays of A modulo 109+7.
+
+
+
+Problem Constraints
+1 <= |A| <= 100000
+
+1 <= A[i] <= 1000000
+
+
+
+Input Format
+The first and only argument given is the integer array A.
+
+
+
+Output Format
+Return the sum of values of all possible subarrays of A modulo 109+7.
+
+
+
+Example Input
+Input 1:
+
+ A = [1]
+Input 2:
+
+ A = [4, 7, 3, 8]
+
+
+Example Output
+Output 1:
+
+ 0
+Output 2:
+
+ 26
+
+
+Example Explanation
+Explanation 1:
+
+Only 1 subarray exists. Its value is 0.
+Explanation 2:
+
+value ( [4] ) = 4 - 4 = 0
+value ( [7] ) = 7 - 7 = 0
+value ( [3] ) = 3 - 3 = 0
+value ( [8] ) = 8 - 8 = 0
+value ( [4, 7] ) = 7 - 4 = 3
+value ( [7, 3] ) = 7 - 3 = 4
+value ( [3, 8] ) = 8 - 3 = 5
+value ( [4, 7, 3] ) = 7 - 3 = 4
+value ( [7, 3, 8] ) = 8 - 3 = 5
+value ( [4, 7, 3, 8] ) = 8 - 3 = 5
+sum of values % 10^9+7 = 26
+"""
+class Solution:
+    # @param A : list of integers
+    # @return an integer
+    def solve(self, A):
+        mod = (10 ** 9) + 7
+
+        nse_l = self.NSE_L_idx(A)
+        nse_r = self.NSE_R_idx(A)
+        nge_l = self.NGE_L_idx(A)
+        nge_r = self.NGE_R_idx(A)
+
+        # for each element, check in how many sub-arrays arrays, it can be max
+        # find the prev and next greater element
+
+        # for each element, check in how many sub-arrays arrays, it can be min
+        # find the prev and next smallerer element
+
+        ans = 0
+        for idx in range(len(A)):
+            smaller_left, smaller_right = nse_l[idx], nse_r[idx]
+            greater_left, greater_right = nge_l[idx], nge_r[idx]
+            #if smaller_left == -1:
+                #smaller_left = 0
+            #if greater_left == -1:
+                #greater_left = 0
+            if smaller_right == -1:
+                smaller_right = len(A)
+            if greater_right == -1:
+                greater_right = len(A)
+            _min = (((idx - smaller_left) % mod) * ((smaller_right - idx) % mod) * (A[idx] % mod)) % mod
+            _max = (((idx - greater_left) % mod) * ((greater_right - idx) % mod) * (A[idx] % mod)) % mod
+            ans = (ans + _max - _min)
+
+        return ans % mod
+
+    def NSE_L_idx(self, A):
+        ans = [None] * len(A)
+        stack = []
+        for idx in range(len(A)):
+            while stack and A[stack[-1]] >= A[idx]:
+                stack.pop()
+            if not stack:
+                ans[idx] = -1
+            else:
+                ans[idx] = stack[-1]
+            stack.append(idx)
+        return ans
+
+    def NSE_R_idx(self, A):
+        ans = [None] * len(A)
+        stack = []
+        for idx in range(len(A) - 1, -1, -1):
+            while stack and A[stack[-1]] >= A[idx]:
+                stack.pop()
+            if not stack:
+                ans[idx] = -1
+            else:
+                ans[idx] = stack[-1]
+            stack.append(idx)
+        return ans
+
+    def NGE_L_idx(self, A):
+        ans = [None] * len(A)
+        stack = []
+        for idx in range(len(A)):
+            while stack and A[stack[-1]] <= A[idx]:
+                stack.pop()
+            if not stack:
+                ans[idx] = -1
+            else:
+                ans[idx] = stack[-1]
+            stack.append(idx)
+        return ans
+
+    def NGE_R_idx(self, A):
+        ans = [None] * len(A)
+        stack = []
+        for idx in range(len(A) - 1, -1, -1):
+            while stack and A[stack[-1]] <= A[idx]:
+                stack.pop()
+            if not stack:
+                ans[idx] = -1
+            else:
+                ans[idx] = stack[-1]
+            stack.append(idx)
+        return ans
