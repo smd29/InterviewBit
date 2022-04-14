@@ -1,0 +1,99 @@
+"""
+Problem Description
+Given an integer A, you have to find the Ath Perfect Number.
+
+A Perfect Number has the following properties:
+
+It comprises only 1 and 2.
+
+The number of digits in a Perfect number is even.
+
+It is a palindrome number.
+
+For example, 11, 22, 112211 are Perfect numbers, where 123, 121, 782, 1 are not.
+
+
+
+Problem Constraints
+1 <= A <= 100000
+
+
+
+Input Format
+The only argument given is an integer A.
+
+
+
+Output Format
+Return a string that denotes the Ath Perfect Number.
+
+
+
+Example Input
+Input 1:
+
+ A = 2
+Input 2:
+
+ A = 3
+
+
+Example Output
+Output 1:
+
+ 22
+Output 2:
+
+ 1111
+
+
+Example Explanation
+Explanation 1:
+
+First four perfect numbers are:
+1. 11
+2. 22
+3. 1111
+4. 1221
+Explanation 2:
+
+First four perfect numbers are:
+1. 11
+2. 22
+3. 1111
+4. 1221
+"""
+from collections import deque
+class Solution:
+    # @param A : integer
+    # @return a strings
+    def solve(self, A):
+        if A == 1:
+            return 11
+        if A == 2:
+            return 22
+        first = self.get_first_half(A)
+        second, _len = self.getPalindrome(first)
+        return first * (10 ** _len) + second
+
+    
+    def get_first_half(self,A):
+        queue = deque([1,2])
+        A -= 2
+        while A > 0:
+            val = queue.popleft()
+            for num in range(1,3):
+                add = val * 10 + num 
+                queue.append(add)
+                A -= 1
+                if A == 0:
+                    return add
+    
+    def getPalindrome(self,num):
+        pal = 0 
+        _len = 0
+        while num > 0:
+            pal = pal * 10 + (num % 10)
+            num = num // 10
+            _len += 1
+        return pal, _len 
