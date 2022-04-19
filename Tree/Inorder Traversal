@@ -71,9 +71,9 @@ class Solution:
             node,visited = stack.pop()
             if node:
                 if visited:
-                    res.append(node)
+                    res.append(node.val)
                 else:
                     stack.append((node.right,False))
-                    stack.append((node.val,True))
+                    stack.append((node,True))
                     stack.append((node.left,False))
         return res
