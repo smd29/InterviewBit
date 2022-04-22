@@ -67,7 +67,7 @@ class Solution:
 	# @param B : list of integers
 	# @return the root node in the tree
 	def buildTree(self, inorder, postorder):
-		if not inorder or not postorder:
+	if not inorder or not postorder:
             return None
         root = TreeNode(postorder.pop())
         mid = inorder.index(root.val)
