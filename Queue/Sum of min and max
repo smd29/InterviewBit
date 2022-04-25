@@ -1,0 +1,147 @@
+"""
+Problem Description
+Given an array A of both positive and negative integers.
+
+Your task is to compute the sum of minimum and maximum elements of all sub-array of size B.
+
+NOTE: Since the answer can be very large, you are required to return the sum modulo 109 + 7.
+
+
+
+Problem Constraints
+1 <= size of array A <= 105
+
+-109 <= A[i] <= 109
+
+1 <= B <= size of array
+
+
+
+Input Format
+The first argument denotes the integer array A.
+The second argument denotes the value B
+
+
+
+Output Format
+Return an integer that denotes the required value.
+
+
+
+Example Input
+Input 1:
+
+ A = [2, 5, -1, 7, -3, -1, -2]
+ B = 4
+Input 2:
+
+ A = [2, -1, 3]
+ B = 2
+
+
+Example Output
+Output 1:
+
+ 18
+Output 2:
+
+ 3
+
+
+Example Explanation
+Explanation 1:
+
+ Subarrays of size 4 are : 
+    [2, 5, -1, 7],   min + max = -1 + 7 = 6
+    [5, -1, 7, -3],  min + max = -3 + 7 = 4      
+    [-1, 7, -3, -1], min + max = -3 + 7 = 4
+    [7, -3, -1, -2], min + max = -3 + 7 = 4   
+    Sum of all min & max = 6 + 4 + 4 + 4 = 18 
+Explanation 2:
+
+ Subarrays of size 2 are : 
+    [2, -1],   min + max = -1 + 2 = 1
+    [-1, 3],   min + max = -1 + 3 = 2
+    Sum of all min & max = 1 + 2 = 3 
+"""
+from collections import deque
+class Solution:
+    # @param A : list of integers
+    # @param B : integer
+    # @return an integer
+    def solve(self, A, B):
+        mod = (10 ** 9) + 7
+        total = 0
+        max_arr = self.find_max(A,B)
+        min_arr = self.find_min(A,B)
+        for val1,val2 in zip(max_arr,min_arr):
+            total += val1 + val2
+        total = total % mod 
+        if total < 0:
+            total += mod 
+        return total
+
+    def find_max(self,A,B):
+        res = []
+        queue = deque()
+        for idx in range(B):
+            if not queue:
+                queue.append(A[idx])
+            else:
+                if A[idx] < queue[-1]:
+                    queue.append(A[idx])
+                else:
+                    while queue and queue[-1] < A[idx]:
+                        queue.pop()
+                    queue.append(A[idx])
+        res.append(queue[0])
+        if len(queue) == B:
+            queue.popleft()
+
+        for idx in range(B,len(A)):
+            val = A[idx]
+            if queue[0] == A[idx-B]:
+                #element at idx-B is getting discarded here
+                queue.popleft()
+            if val < queue[-1]:
+                queue.append(val)
+            else:
+                while queue and queue[-1] < val:
+                    queue.pop()
+                queue.append(val)
+            res.append(queue[0])
+
+        return res
+
+
+    def find_min(self,A,B):
+        res = []
+        queue = deque()
+        for idx in range(B):
+            if not queue:
+                queue.append(A[idx])
+            else:
+                if A[idx] > queue[-1]:
+                    queue.append(A[idx])
+                else:
+                    while queue and queue[-1] > A[idx]:
+                        queue.pop()
+                    queue.append(A[idx])
+        res.append(queue[0])
+        if len(queue) == B:
+            queue.popleft()
+
+        for idx in range(B,len(A)):
+            val = A[idx]
+            if queue[0] == A[idx-B]:
+                #element at idx-B is getting discarded here
+                queue.popleft()
+            if val > queue[-1]:
+                queue.append(val)
+            else:
+                while queue and queue[-1] > val:
+                    queue.pop()
+                queue.append(val)
+            res.append(queue[0])
+
+        return res
