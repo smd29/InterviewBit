@@ -63,8 +63,7 @@ class Solution:
     # @param A : list of integers
     # @return a strings
     def solve(self, A):
-        suffix_min = [0] * len(A)
-        suffix_max = [0] * len(A)
+        #the idea is to calculate suffix max and suffix min for all values, the value should be equal to either one in order to be valid
         min_val, max_val = float('inf'),float('-inf')
         for idx in range(len(A)-1,-1,-1):
             max_val = max(max_val,A[idx])
