@@ -78,24 +78,32 @@ class Solution:
 	# @param C : integer
 	# @return an integer
 	def lca(self, root, B, C):
-        
-        parent = {root.val:None}
-        stack = [root]
-        while B not in parent or C not in parent:
-            if not stack:
-                return -1
-            node = stack.pop()
-            if node.left:
-                parent[node.left.val] = node.val 
-                stack.append(node.left)
-            if node.right:
-                parent[node.right.val] = node.val
-                stack.append(node.right)
-        ancestors = set()
-        while B:
-            ancestors.add(B)
-            B = parent[B]
-        
-        while C not in ancestors:
-            C = parent[C]
-        return C
+		if not self.check(root,B) or not self.check(root,C):
+			return -1
+		return self.findLCA(root,B,C)
+		
+	
+	def check(self,root,B):
+		res = []
+		def preOrder(node):
+			if node:
+				res.append(node.val)
+				preOrder(node.left)
+				preOrder(node.right)
+		preOrder(root)
+		if B not in res:
+			return False
+		return True
+
+	def findLCA(self,root,B,C):
+		if not root:
+			return None
+		if root.val == B or root.val == C:
+			return root.val 
+		leftLCA = self.findLCA(root.left,B,C)
+		rightLCA = self.findLCA(root.right,B,C)
+		if leftLCA and rightLCA:
+			return root.val 
+		if leftLCA:
+			return leftLCA
+		return rightLCA
