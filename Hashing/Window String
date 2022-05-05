@@ -1,0 +1,87 @@
+"""
+Problem Description
+Given a string A and a string B, find the window with minimum length in A, which will contain all the characters in B in linear time complexity.
+Note that when the count of a character c in B is x, then the count of c in the minimum window in A should be at least x.
+
+Note:
+
+If there is no such window in A that covers all characters in B, return the empty string.
+If there are multiple such windows, return the first occurring minimum window ( with minimum start index and length )
+
+
+Problem Constraints
+1 <= size(A), size(B) <= 106
+
+
+
+Input Format
+The first argument is a string A.
+The second argument is a string B.
+
+
+
+Output Format
+Return a string denoting the minimum window.
+
+
+
+Example Input
+Input 1:
+
+ A = "ADOBECODEBANC"
+ B = "ABC"
+Input 2:
+
+ A = "Aa91b"
+ B = "ab"
+
+
+Example Output
+Output 1:
+
+ "BANC"
+Output 2:
+
+ "a91b"
+
+
+Example Explanation
+Explanation 1:
+
+ "BANC" is a substring of A which contains all characters of B.
+Explanation 2:
+
+ "a91b" is the substring of A which contains all characters of B.
+
+"""
+class Solution:
+	# @param s : string
+	# @param t : string
+	# @return a strings
+	def minWindow(self, s, t):
+        t_count, window = {}, {}
+        for c in t:
+            t_count[c] = 1 + t_count.get(c,0)
+        curr_size, reqd_size = 0, len(t_count)
+        res, resLen = [None,None], float('inf')
+
+        start = 0 
+        for end in range(len(s)):
+            c = s[end]
+            window[c] = 1 +window.get(c,0)
+
+            if c in t_count and window[c] == t_count[c]:
+                curr_size += 1 
+            
+            while curr_size == reqd_size:
+                if end - start + 1 < resLen:
+                    resLen = end - start + 1 
+                    res = [start,end]
+                window[s[start]] -= 1
+                if s[start] in t_count and window[s[start]] < t_count[s[start]]:
+                    curr_size -= 1
+                start += 1
+        l,r = res 
+        if resLen == float('inf'):
+            return ""
+        return s[l:r+1]
