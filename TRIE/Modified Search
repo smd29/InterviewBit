@@ -1,0 +1,126 @@
+"""
+Problem Description
+
+Given two arrays of strings A of size N and B of size M.
+
+Return a binary string C where C[i] = '1' if B[i] can be found in dictionary A using exactly one modification in B[i], Else C[i] = '0'.
+
+NOTE: modification is defined as converting a character into another character.
+
+
+
+Problem Constraints
+
+1 <= N <= 30000
+
+1 <= M <= 2500
+
+1 <= length of any string either in A or B <= 20
+
+strings contains only lowercase alphabets
+
+
+
+Input Format
+
+First argument is the string arrray A.
+
+Second argument is the string array B.
+
+
+
+Output Format
+
+Return a binary string C where C[i] = '1' if B[i] can be found in dictionary A using one modification in B[i], Else C[i] = '0'.
+
+
+
+Example Input
+
+Input 1:
+
+ A = [data, circle, cricket]
+ B = [date, circel, crikket, data, circl]
+Input 2:
+
+ A = [hello, world]
+ B = [hella, pello, pella]
+
+
+Example Output
+
+Output 1:
+
+ "10100"
+Output 2:
+
+ "110"
+
+
+Example Explanation
+
+Explanation 1:
+
+ 1. date = dat*(can be found in A)
+ 2. circel =(cannot be found in A using exactly one modification)
+ 3. crikket = cri*ket(can be found in A)
+ 4. data = (cannot be found in A using exactly one modification)
+ 5. circl = (cannot be found in A using exactly one modification)
+Explanation 2:
+
+ Only pella cannot be found in A using only one modification.
+
+"""
+class TrieNode:
+    def __init__(self): 
+        self.isEnd = False
+        self.child = [None] * 26 
+        
+def insert(root, word): 
+    pCrawl = root 
+    for i in range(len(word)): 
+        index = ord(word[i]) - ord('a') 
+        if pCrawl.child[index] == None: 
+            pCrawl.child[index] = TrieNode() 
+        pCrawl = pCrawl.child[index] 
+    pCrawl.isEnd = True
+
+
+def query(cur, i, s, flag, last):   
+    ans = 0
+    n = len(s)
+    if(i == n):
+        if(flag == 1 and last):
+            return 1
+        return 0
+    c = ord(s[i]) - 97
+    # If the complete prefix is not present in the trie
+    if (flag == 0):
+        for x in range(26):#(auto x = (cur->child).begin(); x!= (cur->child).end(); x++){
+            if(cur.child[x] == None):
+                continue
+            if(x == c):
+                ans = ans | query(cur.child[x], i+1, s, flag, cur.child[x].isEnd)
+            else:
+                ans = ans | query(cur.child[x], i+1, s, 1-flag, cur.child[x].isEnd);
+    else:
+        if(cur.child[c] != None):
+            ans = ans | query(cur.child[c], i+1, s, flag,cur.child[c].isEnd)
+      
+    return ans
+
+
+class Solution:
+    # @param A : list of strings
+    # @param B : list of strings
+    # @return a strings
+    def solve(self, A, B):
+        root = TrieNode()
+        for i in range(len(A)):
+            insert(root,A[i])
+        ans = ""
+        for i in range(len(B)):
+            temp = query(root,0,B[i],0,False)
+            temp += 48
+            ans += chr(temp)
+        return ans
