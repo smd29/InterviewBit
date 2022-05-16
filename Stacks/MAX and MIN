@@ -100,7 +100,7 @@ class Solution:
         ans = [None] * len(A)
         stack = []
         for idx in range(len(A)):
-            while stack and A[stack[-1]] >= A[idx]:
+            while stack and A[stack[-1]] > A[idx]:
                 stack.pop()
             if not stack:
                 ans[idx] = -1
@@ -126,7 +126,7 @@ class Solution:
         ans = [None] * len(A)
         stack = []
         for idx in range(len(A)):
-            while stack and A[stack[-1]] <= A[idx]:
+            while stack and A[stack[-1]] < A[idx]:
                 stack.pop()
             if not stack:
                 ans[idx] = -1
