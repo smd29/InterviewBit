@@ -1,0 +1,49 @@
+"""
+Write a program to solve a Sudoku puzzle by filling the empty cells. Empty cells are indicated by the character '.' You may assume that there will be only one unique solution.
+"""
+import collections
+class Solution:
+    # @param A : list of list of chars
+    def solveSudoku(self, A):
+        rows = collections.defaultdict(set)
+        cols = collections.defaultdict(set)
+        squares = collections.defaultdict(set)
+
+        for r in range(9):
+            for c in range(9):
+                if A[r][c] != ".":
+                    rows[r].add(A[r][c])
+                    cols[c].add(A[r][c])
+                    squares[(r//3,c//3)].add(A[r][c])
+
+        def backtrack(r,c):
+            if r == 9:
+                self.found = True 
+                return 
+            if c > 8:
+                #process next row
+                backtrack(r+1,0)
+            elif A[r][c] != ".":
+                #if already present, then process next cell 
+                backtrack(r,c+1)
+            else:
+                for num in '123456789':
+                    if num not in rows[r] and num not in cols[c] and num not in squares[(r//3,c//3)]:
+                        rows[r].add(num)
+                        cols[c].add(num)
+                        squares[(r//3,c//3)].add(num)
+                        A[r][c] = num 
+                        
+                        backtrack(r,c+1)
+
+                        if not self.found:
+                            #backtrack
+                            rows[r].remove(num)
+                            cols[c].remove(num)
+                            squares[(r//3,c//3)].remove(num)
+                            A[r][c] = "."
+                    
+        
+        self.found = False
+        backtrack(0,0)
+        return A
