@@ -1,0 +1,108 @@
+"""
+Problem Description
+
+Given a grid A, a rat is at position (1, 1). He wants to go to the position (n, n) where n is size of the square matrix A.
+
+1 represents a traversable cell and 0 represents a non-traversable cell. Rat can only move right or down.
+
+Return a path that the rat can take.
+
+
+
+Problem Constraints
+
+1 <= |A| <= 4
+
+
+
+Input Format
+
+First and only argument is the vector of vectors A.
+
+
+
+Output Format
+
+Return a vector of vectors that denotes a path that can be taken.
+
+
+
+Example Input
+
+Input 1:
+
+A = [   [1, 0]
+        [1, 1]
+    ]
+Input 2:
+
+A = [    [1, 1, 1]
+         [1, 0, 1]
+         [0, 0, 1]
+    ]
+
+
+Example Output
+
+Output 1:
+
+[   [1, 0]
+    [1, 1]
+]
+Output 2:
+
+[    [1, 1, 1]
+     [0, 0, 1]
+     [0, 0, 1]
+]
+
+
+Example Explanation
+
+Explanation 1:
+
+ Path is shown in output.
+Explanation 2:
+
+ Path is shown in output.
+"""
+class Solution:
+    # @param A : list of list of integers
+    # @return a list of list of integers
+    def solve(self, A):
+        #1-based indexing
+        n = len(A)
+        res = [[0 for c in range(n)]for r in range(n)]
+
+        def isSafe(A,r,c,n):
+            if r < 0 or r > n-1 or c < 0 or c > n-1 or A[r][c] == 0:
+                return False
+            return True
+        
+        def backtrack(A,r,c,res):
+            if r == n-1 and c == n-1 and A[r][c] == 1:
+                res[r][c] == 1
+                return True 
+            
+            if isSafe(A,r,c,n):    
+                #already traversed path
+                if res[r][c] == 1:
+                    return False 
+                #(r,c) is probable solution path
+                res[r][c] = 1
+                if  backtrack(A,r+1,c,res):
+                    return True
+                if  backtrack(A,r,c+1,res):
+                    return True
+                if  backtrack(A,r-1,c,res):
+                    return True
+                if  backtrack(A,r,c-1,res):
+                    return True
+                #backtrack
+                res[r][c] = 0
+                return False
+
+        backtrack(A,0,0,res)
+        #the last one will always be traversable
+        res[-1][-1] = 1
+        return res
