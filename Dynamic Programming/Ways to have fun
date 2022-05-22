@@ -1,0 +1,71 @@
+"""
+Problem Description
+
+Find the number of ways you can have fun in A days, given you can sleep every day, Pizza can be eaten every alternate day and you can watch Tv shows every two days.
+
+Since the answer could be large, return answer % 109 + 7.
+
+
+
+Problem Constraints
+
+1 <= A <= 105
+
+
+
+Input Format
+
+First and only argument is an integer A denoting the number of days.
+
+
+
+Output Format
+
+Return an integer denoting the number of ways you can have fun in A days.
+
+
+
+Example Input
+
+Input 1:
+
+ A = 2
+Input 2:
+
+ A = 3
+
+
+Example Output
+
+Output 1:
+
+ 7
+Output 2:
+
+ 15
+
+
+Example Explanation
+
+Explanation 1:
+
+ There will be 7 ways to have fun:
+ (SS), (SP), (ST), (PS), (PT), (TS), (TP).
+Explanation 2:
+
+ There will be 15 ways to have fun.
+"""
+class Solution:
+    # @param A : integer
+    # @return an integer
+    def solve(self, A):
+        mod = (10 ** 9) + 7
+        dp = [[0 for c in range(3)]for r in range(A+1)]
+        #col 0 -> sleep || col 1 -> Pizza || col2 --> TV
+        dp[1][0], dp[1][1], dp[1][2] = 1, 1, 1
+        for r in range(2,A+1):
+            dp[r][0] = (dp[r-1][0] + dp[r-1][1] + dp[r-1][2]) % mod 
+            dp[r][1] = (dp[r-1][0] + dp[r-1][2]) % mod # can't have pizza in the previous day 
+            dp[r][2] = (dp[r-1][0] + dp[r-1][1] - 2*(dp[r-2][2])) % mod # can have pizza and sleep previous day, but can't have TV prev prev day 
+            #need to subtract the contribution of TV of r-2th day from r-1th day's (Pizza+sleep)
+        return (dp[-1][0] + dp[-1][1] + dp[-1][2]) % mod 
