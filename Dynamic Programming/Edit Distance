@@ -1,0 +1,80 @@
+"""
+Problem Description
+Given two strings A and B, find the minimum number of steps required to convert A to B. (each operation is counted as 1 step.)
+
+You have the following 3 operations permitted on a word:
+
+Insert a character
+Delete a character
+Replace a character
+
+
+Problem Constraints
+1 <= length(A), length(B) <= 450
+
+
+
+Input Format
+The first argument of input contains a string, A.
+The second argument of input contains a string, B.
+
+
+
+Output Format
+Return an integer, representing the minimum number of steps required.
+
+
+
+Example Input
+Input 1:
+
+ A = "abad"
+ B = "abac"
+Input 2:
+
+ A = "Anshuman"
+ B = "Antihuman
+
+
+Example Output
+Output 1:
+
+ 1
+Output 2:
+
+ 2
+
+
+Example Explanation
+Exlanation 1:
+
+ A = "abad" and B = "abac"
+ After applying operation: Replace d with c. We get A = B.
+ 
+Explanation 2:
+
+ A = "Anshuman" and B = "Antihuman"
+ After applying operations: Replace s with t and insert i before h. We get A = B.
+"""
+class Solution:
+    # @param A : string
+    # @param B : string
+    # @return an integer
+    def minDistance(self, A, B):
+        m, n = len(A), len(B)
+        dp = [[0 for j in range(n+1)]for i in range(m+1)]
+
+        for i in range(m+1):
+            for j in range(n+1):
+                if i == 0:
+                    dp[i][j] = j 
+                elif j == 0:
+                    dp[i][j] = i 
+                elif A[i-1] == B[j-1]:
+                    dp[i][j] = dp[i-1][j-1]
+                else:
+                    replace = dp[i-1][j-1] + 1
+                    add = dp[i][j-1] + 1 
+                    delete = dp[i-1][j] + 1
+                    dp[i][j] = min(replace,add,delete)
+        return dp[-1][-1]
