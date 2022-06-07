@@ -1,0 +1,73 @@
+"""
+Problem Description
+Given a string A. Find the longest palindromic subsequence (A subsequence which does not need to be contiguous and is a palindrome).
+
+You need to return the length of longest palindromic subsequence.
+
+
+
+Problem Constraints
+1 <= length of(A) <= 103
+
+
+
+Input Format
+First and only integer is a string A.
+
+
+
+Output Format
+Return an integer denoting the length of longest palindromic subsequence.
+
+
+
+Example Input
+Input 1:
+
+ A = "bebeeed"
+Input 2:
+
+ A = "aedsead"
+
+
+Example Output
+Output 1:
+
+ 4
+Output 2:
+
+ 5
+
+
+Example Explanation
+Explanation 1:
+
+ The longest palindromic subsequence is "eeee", which has a length of 4.
+Explanation 2:
+
+ The longest palindromic subsequence is "aedea", which has a length of 5.
+"""
+class Solution:
+    # @param A : string
+    # @return an integer
+    def solve(self, A):
+        #take two pointers, start and end. if the characters match; then lcs(start+1,end-1)+2
+        #else max(lcs(start+1,end),lcs(start,end-1))
+        #here we cannot go left to right, top down approach. 
+        #only upper diagonal is enough
+        
+        n = len(A)
+        dp = [[0 for c in range(n)]for r in range(n)]
+        for r in range(n):
+            dp[r][r] = 1
+        for length in range(2,n+1):
+            for r in range(n-length+1):
+                c = r + length - 1
+                if A[r] == A[c] and length == 2:
+                    dp[r][c] = 2
+                elif A[r] == A[c]:
+                    dp[r][c] = dp[r+1][c-1] + 2
+                else:
+                    dp[r][c] = max(dp[r+1][c],dp[r][c-1])
+        
+        return dp[0][-1]
