@@ -1,0 +1,94 @@
+"""
+Problem Description
+Given A, B, C find whether C is formed by the interleaving of A and B.
+
+
+
+Problem Constraints
+1 <= length(A), length(B) <= 100
+
+1 <= length(C) <= 200
+
+
+
+Input Format
+The first argument of input contains a string, A.
+The second argument of input contains a string, B.
+The third argument of input contains a string, C.
+
+
+
+Output Format
+Return 1 if string C is formed by interleaving of A and B else 0.
+
+
+
+Example Input
+Input 1:
+
+ A = "aabcc"
+ B = "dbbca"
+ C = "aadbbcbcac"
+Input 2:
+
+ A = "aabcc"
+ B = "dbbca"
+ C = "aadbbbaccc"
+
+
+Example Output
+Output 1:
+
+ 1
+Output 2:
+
+ 0
+
+
+Example Explanation
+Explanation 1:
+
+ "aa" (from A) + "dbbc" (from B) + "bc" (from A) + "a" (from B) + "c" (from A)
+Explanation 2:
+
+ It is not possible to get C by interleaving A and B.
+"""
+class Solution:
+	# @param A : string
+	# @param B : string
+	# @param C : string
+	# @return an integer
+	def isInterleave(self, A, B, C):
+		rows, cols = len(A), len(B)
+		if rows + cols != len(C):
+			return 0
+		
+		dp = [[0 for c in range(cols+1)]for r in range(rows+1)]
+
+		for r in range(rows+1):
+			for c in range(cols+1):
+				#empty string:
+				if r == 0 and c == 0:
+					dp[r][c] = 1
+				
+				#A is empty
+				elif r == 0 and B[c-1] == C[c-1]:
+					dp[r][c] = dp[r][c-1]
+				
+				#B is empty
+				elif c == 0 and A[r-1] == C[c-1]:
+					dp[r][c] = dp[r-1][c]
+				
+				#char at C matches with A, but not B 
+				elif A[r-1] == C[r+c-1] and B[c-1] != C[r+c-1]:
+					dp[r][c] = dp[r-1][c]
+				
+				#char at C matches with B, but not A 
+				elif A[r-1] != C[r+c-1] and B[c-1] == C[r+c-1]:
+					dp[r][c] = dp[r][c-1]
+				
+				#char at C matches both A and B 
+				elif A[r-1] == C[r+c-1] and B[c-1] == C[r+c-1]:
+					dp[r][c] = dp[r-1][c] or dp[r][c-1]
+		
+		return dp[-1][-1]
