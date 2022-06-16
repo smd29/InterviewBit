@@ -86,20 +86,20 @@ class Solution:
         for src,dest in B:
             adj_list[src].append(dest)
             adj_list[dest].append(src)
-        visited = {}    
+        parent = {}    
         for i in range(1,A+1):
-            if i in visited:
+            if i in parent:
                 continue
             queue = deque([i])
-            visited[i] = -1
+            parent[i] = -1
         
             while queue:
                 node = queue.popleft()
                 for neighbor in adj_list[node]:
-                    if neighbor in visited:
-                        if neighbor != visited[node]:
+                    if neighbor in parent:
+                        if neighbor != parent[node]:
                             return 1
                         continue
-                    visited[neighbor] = node
+                    parent[neighbor] = node
                     queue.append(neighbor)
         return 0
