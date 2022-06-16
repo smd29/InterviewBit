@@ -1,0 +1,98 @@
+"""
+Problem Description
+Given a matrix of integers A of size N x M consisting of 0, 1 or 2.
+
+Each cell can have three values:
+
+The value 0 representing an empty cell.
+
+The value 1 representing a fresh orange.
+
+The value 2 representing a rotten orange.
+
+Every minute, any fresh orange that is adjacent (Left, Right, Top, or Bottom) to a rotten orange becomes rotten. Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return -1 instead.
+
+Note: Your solution will run on multiple test cases. If you are using global variables, make sure to clear them.
+
+
+
+Problem Constraints
+1 <= N, M <= 1000
+
+0 <= A[i][j] <= 2
+
+
+
+Input Format
+The first argument given is the integer matrix A.
+
+
+
+Output Format
+Return the minimum number of minutes that must elapse until no cell has a fresh orange.
+
+If this is impossible, return -1 instead.
+
+
+
+Example Input
+Input 1:
+
+A = [   [2, 1, 1]
+        [1, 1, 0]
+        [0, 1, 1]   ]
+Input 2:
+
+ 
+A = [   [2, 1, 1]
+        [0, 1, 1]
+        [1, 0, 1]   ]
+
+
+Example Output
+Output 1:
+
+ 4
+Output 2:
+
+ -1
+
+
+Example Explanation
+Explanation 1:
+
+ Max of 4 using (0,0) , (0,1) , (1,1) , (1,2) , (2,2)
+Explanation 2:
+
+ Task is impossible
+"""
+from collections import deque
+class Solution:
+    # @param A : list of list of integers
+    # @return an integer
+    def solve(self, A):
+        rows, cols = len(A), len(A[0])
+        fresh = 0 
+        queue = deque()
+        visited = set()
+        for r in range(rows):
+            for c in range(cols):
+                if A[r][c] == 1:
+                    fresh += 1
+                elif A[r][c] == 2:
+                    queue.append([r,c,0])
+                    visited.add((r,c))
+
+        time = 0 
+        while queue:
+            row,col,time = queue.popleft()
+            directions = [[1,0],[-1,0],[0,1],[0,-1]]
+            for dr,dc in directions:
+                r,c = row + dr, col + dc 
+                if (r in range(rows) and c in range(cols) and A[r][c] == 1 and (r,c) not in visited):
+                    fresh -= 1
+                    visited.add((r,c))
+                    queue.append([r,c,time+1])
+        if fresh > 0:
+            return -1
+        return time
