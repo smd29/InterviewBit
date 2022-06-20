@@ -76,6 +76,7 @@ Explanation 2:
  The given graph contain cycle so topological ordering not possible we will return empty array.
 """
 from collections import defaultdict
+from heapq import heappush,heappop
 class Solution:
     # @param A : integer
     # @param B : list of list of integers
@@ -90,22 +91,22 @@ class Solution:
             adj_list[src].append(dest)
             indegree[dest] += 1
 
-        start = set()
+        heap = []
         for node in indegree:
             if indegree[node] == 0:
-                start.add(node)
+                heappush(heap,node)
 
         while indegree:
-            if len(start) == 0:
+            if not heap:
                 return []
             # find the minimum in start
-            start_node = min(start)
-            ans.append(start_node)
-            for neighbors in adj_list[start_node]:
+            start = heappop(heap)
+            ans.append(start)
+            for neighbors in adj_list[start]:
                 indegree[neighbors] -= 1
                 if indegree[neighbors] == 0:
-                    start.add(neighbors)
-            #remove from both set and dictionary
-            del indegree[start_node]
-            start.remove(start_node)
+                    heappush(heap,neighbors)
+            #remove from both heap and dictionary
+            del indegree[start]
+            
         return ans
